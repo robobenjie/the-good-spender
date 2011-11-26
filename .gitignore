@@ -1,0 +1,10 @@
+pom.xml
+*jar
+/lib/
+/classes/
+.lein-failures
+.lein-deps-sum
+/Users/benjie/Dropbox/Benjie/spendy/dump.rdb
+/Users/benjie/Dropbox/Benjie/spendy/resources/public/scripts/scripts.js
+/Users/benjie/Dropbox/Benjie/spendy/resources/public/scripts/make_html.js
+/Users/benjie/Dropbox/Benjie/spendy/resources/public/scripts/wait.js
