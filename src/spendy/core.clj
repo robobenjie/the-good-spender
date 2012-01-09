@@ -6,7 +6,7 @@
 
 (def site-name "The Good Spender")
 (def nav-pages ["Home" "About" "Contact" "Blog"])
-(def nav-targets ["#" "#about" "#contact" "http://robobenjie.posterous.com/"])
+(def nav-targets ["#" "#about" "mailto:bmholson@gmail.com" "http://robobenjie.posterous.com/"])
 
 (def make-item-content
   [:div
@@ -18,6 +18,28 @@
 	[:label {:for "price"} "Approximate cost?"]
 	[:div.input
 	    [:input {:class "large make-item-input", :id "price-box", :name "price", :size 30, :type "text"}]]]])
+
+(def make-user-content
+  [:div
+	[:form
+	    [:div.clearfix
+		[:label {:for "name"} "Name:"]
+		[:div.input
+		    [:input {:class "large make-item-input", :id "user-name-box", :name "name", :size 30, :type "text"}]]]
+	    [:div.clearfix
+		[:label {:for "email"} "Email:"]
+		[:div.input
+		    [:input {:class "large make-item-input", :id "user-email-box", :name "email", :size 30, :type "text"}]]]
+	    [:div.clearfix
+		[:label {:for "password"} "Password:"]
+		[:div.input
+		    [:input {:class "large make-item-input", :id "user-password-box", :name "password", :size 30, :type "password"}]]]
+	    [:div {:class "clearfix" :id "user-repeat-password-clearfix"}
+		[:label {:for "password-repeat"} "Password Again:"]
+		[:div.input
+		    [:input {:class "large make-item-input", :id "user-password-repeat-box", :name "password-repeat", :size 30, :type "password"}]
+		    [:span.help-inline {:id "repeat-password-tip"} ""]]]]])
+
 (def add-money-content
     [:div
 	[:p "Maybe you got a check for your birthday, or maybe you just have money to burn. How much extra to you want to add in?"]
@@ -45,7 +67,7 @@
 	[:div.modal-body content]
 	[:div.modal-footer
 	  buttons ]]])
-
+*
 
 (defn layout [title & body]
   (html5
@@ -60,7 +82,8 @@
 	   (include-js "/scripts/scripts.js")]
     [:body 
     	   body
-	   (make-modal "create-item-modal" "Create Object" make-item-content (buttons [["create-btn" "Create" true ""]["cancel-create" "Cancel" false "close-modal"]]))
+	   (make-modal "create-item-modal" "New Thing to Save For" make-item-content (buttons [["create-btn" "Create" true ""]["cancel-create" "Cancel" false "close-modal"]]))
+	   (make-modal "create-user-modal" "Create a New Account" make-user-content (buttons [["create-user-btn" "Register" true ""]]))
 	    (make-modal "add-money-modal" "Add Money" add-money-content (buttons [["add-money-btn" "Add" true ""]["cancel-add" "Cancel" false "close-modal"]]))
 	    (make-modal "subtract-money-modal" "Subtract Money" subtract-money-content (buttons [["subtract-money-btn" "Subtract" true ""]["cancel-subtract" "Cancel" false "close-modal"]]))
 
@@ -74,18 +97,21 @@
 	    [:ul.nav
 		(map (fn [name, target] [(if (= name currentPage) :li.active :li) [:a {:href target} name]]) nav-pages nav-targets)]
 	    [:form {:action "/login" :id "loginForm" :method "get" :class "pull-right"}
-	    	   [:input {:class "input-small" :type "text" :placeholder "username"}]
-	    	  ; [:input {:class "input-small" :type "password" :placeholder "password"}]
-		   [:button {:class "btn", :type "submit"} "Sign in"]]]]])
+	     [:input#username-box {:class "input-small" :type "text" :placeholder "username"}]
+	     " "
+	     [:input#passowrd-box {:class "input-small" :type "password" :placeholder "password"}]
+	     " "
+	     [:button#sign-in {:class "btn", :type "submit"} "Sign in"]]]]])
 
-(defn content-area [page-name tag-line main-content secondary-content]
-      [:div.container
-	[:div.content
-	  [:div.page-header
-	    [:h1 page-name [:small tag-line]]]
-	  [:div.row
-	    [:div.span10 main-content]
-	    [:div.span4 secondary-content]]]])
+(defn content-area [tag page-name tag-line main-content secondary-content]
+    [:div {:class tag}
+	[:div.container
+	    [:div.content
+		[:div.page-header
+		    [:h1 page-name [:small tag-line]]]
+		[:div.row
+		    [:div.span10 main-content]
+		    [:div.span4 secondary-content]]]]])
 (defn side-bar []
     [:form
 	[:fieldset
@@ -141,7 +167,7 @@
 
 (defn respond-to-ajax[type recieved-obj]
       (println "type:" type "object:" recieved-obj)
-      (let [username (recieved-obj "username")]
+      (let [username (recieved-obj "email")]
          (condp = type  
       	     "save-data" 
 	     	(save-to-redis username (update-cash recieved-obj))
@@ -155,12 +181,22 @@
     (layout site-name
 	(make-topbar "Home")
 	(content-area 
+	    "signed-in"
 	    "Your Queue" 
 	    " all the things you want to buy"
-	    [:div 
+	    [:div
 		[:h2 "You have saved $"[:span#money-saved]]
 		[:div#queue-div]
-		[:a.btn{:id "new-item" :style "float: right"} [:h3 "+"]]]
-	    (side-bar))))
+		[:a {:class "btn pad-right" :id "new-item" :style "float: right"} [:h3 "+"]]]
+	    (side-bar))
+	(content-area
+	    "sign-up"
+	    "Sign Up!"
+	    " it's fast and easy"
+	    [:div
+		make-user-content
+		[:div#sign-up-errors]
+		[:a{:class "btn primary pad-right" :id "sign-up-btn" :style "float: right"} "Sign up"]]
+	    [:span#sign-up-tips "I promise it will just take a moment and I'll walk you through it."])))
 
 

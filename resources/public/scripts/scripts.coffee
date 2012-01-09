@@ -1,16 +1,19 @@
 #user object is of the form:
 # {
-  # username: "Benjie"
+  # email: "bmholson@gmail.com"
+  # name: "Benjamin Holson"
   # password: "s3cr3t"
   # cash: 453
   # rate: .0001
   # items:
     # [item1, item2, item3, item4]
 # }
-
-new_user_obj = (username, pw) ->
+#
+nop = ()->
+new_user_obj = (email,name, pw) ->
   {
-    username: username
+    email: email
+    name: name
     password: pw
     cash: 0
     rate: 0
@@ -28,17 +31,16 @@ do_ajax = (mtype, object, callback = ()->)->
   json_obj = JSON.stringify {mtype, object}
   $.post "/", {"send_object": json_obj}, callback
 
-getData = (callback = (obj)-> ) ->
-  do_ajax "get-data", {username, password},
+getData = (username, password, callback = (obj)-> ) ->
+  do_ajax "get-data", {email: username, password: password},
     (result) ->
       userobj = JSON.parse result
-      userobj = new_user_obj(username, password)
       time = new Date()
       updateTime = time.getTime()
       callback userobj
 
-saveData = (dataObj = userobj) ->
-  do_ajax "save-data",  updateObj(dataObj)
+saveData = (dataObj = userobj, callback = nop) ->
+  do_ajax "save-data",  updateObj(dataObj), callback
 
 updateObj = (user) ->
   user.rate = dpm_to_dps $('#money-rate').val()
@@ -70,7 +72,7 @@ dps_to_dpm = (dps)-> # dollars per second -> dollars per month
 dpm_to_dps = (dpm)->
   dpm/2629744
 
-nop = ()->
+
 
 redraw_items = (user, callback = nop, target = '#queue-div') ->
   list_html = for item in userobj.items
@@ -149,11 +151,57 @@ submit_money_change_form = (kind) ->
   $("##{kind}-money-box").val("")
   hideModal()
 
+setup_add_user = () ->
+  $('#user-name-box').focus (e) ->
+    $('#sign-up-tips').html('My name is Benjie, what\'s yours?')
+  $('#user-email-box').focus (e) ->
+    $('#sign-up-tips').html("Nice to meet you, #{$('#user-name-box').val()}. What's your email?")
+  $('#user-password-box').focus (e) ->
+    $('#sign-up-tips').html('Time to pick a password. Everyone loves picking passwords, right?')
+  $('#user-password-repeat-box').focus (e) ->
+    $('#sign-up-tips').html('In accordance with tradition, you must type your password twice. This is the last step!')
+  $('#user-password-repeat-box').keyup (e) ->
+    if $('#user-password-repeat-box').val() == $('#user-password-box').val()
+      $('#user-repeat-password-clearfix').addClass("success")
+      $('#user-repeat-password-clearfix').removeClass("error")
+      $('#repeat-password-tip').html('Match!')
+    else
+      $('#user-repeat-password-clearfix').addClass("error")
+      $('#user-repeat-password-clearfix').removeClass("success")
+      $('#repeat-password-tip').html('Passwords do not yet match')
+  errors = false
+  add_error = (str) ->
+    $('#sign-up-errors').append('<p class="alert-message error">'+str+'</p>')
+    errors = true
+  $('#sign-up-btn').click () ->
+    $('#sign-up-errors').html("")
+    if $('#user-name-box').val() is ""
+      add_error "You need to enter a name"
+    if $('#user-email-box').val() is ""
+      add_error "You left your email blank"
+    if $('#user-password-box').val() is ""
+      add_error "You need to enter a password"
+    if $('#user-password-repeat-box').val() != $('#user-password-box').val()
+      add_error "your passwords need to match"
+    if not errors
+      user_obj = new_user_obj $('#user-email-box').val(), $('#user-name-box').val(), $('#user-password-box').val()
+      saveData user_obj, ()->
+        getData user_obj.email, user_obj.password
+        $(".sign-up").hide()
+        $(".signed-in").show()
+        $('#create-item-modal').show()
+
 $(document).ready ->
-  getData ()->redraw_items(userobj)
+  $('#sign-in').click ->
+    getData $("#username-box").val(),
+            $("#password-box").val(),
+            ->
+              redraw_items(userobj)
+              $(".sign-up").hide()
+              $(".signed-in").show()
   hideModal()
-  $(Document).keydown (e)->
-    e.preventDefault() if e.which is 13
+
+  $('form').submit(()->return false)
   $('.close-modal').click(hideModal)
   $('#new-item').click(()->$('#create-item-modal').show())
   $('#create-btn').click(create_item)
@@ -171,5 +219,7 @@ $(document).ready ->
     submit_money_change_form "add"
   $('#subtract-money-btn').click () ->
     submit_money_change_form "subtract"
+  setup_add_user()
+  $(".signed-in").hide()
 
   repeat 100, ()->update_cash(userobj)
