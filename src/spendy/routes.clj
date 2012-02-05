@@ -8,6 +8,8 @@
             [compojure.response :as response]
 	    [clj-json.core :as json]))
 
+;set it up to go to 127.0.0.1 when I deploy
+
 (defroutes main-routes
   (GET "/" [] (index-page))
 ;  (GET "/login/:username" [username]

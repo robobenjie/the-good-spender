@@ -59,6 +59,7 @@ div.queue-item h1, h2, h3, h4, h5, h6  {
     line-height: normal;
 }
 .queue-item {
+    cursor: move;
     background-color: #f1faf1;
     margin-bottom: 20px;
     margin-top: 10px;
@@ -79,6 +80,10 @@ div.queue-item h1, h2, h3, h4, h5, h6  {
 
 .pad-right {
     margin-right: 40px
+}
+
+.pad-left {
+    margin-left: 20px
 }
 
 /* The white background content wrapper */
