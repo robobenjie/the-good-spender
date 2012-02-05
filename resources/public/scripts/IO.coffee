@@ -8,6 +8,7 @@ IO.get_data = (username, password, callback = (obj)-> ) ->
   do_ajax "get-data", {email: username, password: password},
     (result) ->
       user = JSON.parse result
+      user.password = password #stuff password back in because the server doesn't store it
       time = new Date()
       callback user, time
       #because it is Asynchronous, get_data returns something crazy

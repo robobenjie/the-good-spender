@@ -2,7 +2,7 @@ window.SETUP = {}
 
 money_updater = {}
 # Sets attaches all the events for the signup paec
-SETUP.add_user = (CORE) ->
+SETUP.add_user = (CORE, user) ->
   #the sign-your-work modal:
   $('#save-btn').click ->
     CORE.change_main_panel('sign-up')
@@ -41,9 +41,12 @@ SETUP.add_user = (CORE) ->
     if $('#user-password-repeat-box').val() != $('#user-password-box').val()
       add_error "your passwords need to match"
     if not errors
-      user_obj = CORE.new_user_obj $('#user-email-box').val(), $('#user-name-box').val(), $('#user-password-box').val()
-      IO.save_data user_obj, ()->
-        IO.get_data user_obj.email, user_obj.password
+      user.email = $('#user-email-box').val()
+      user.name =  $('#user-name-box').val()
+      user.password = $('#user-password-box').val()
+
+      IO.save_data user, ()->
+        IO.get_data user.email, user.password
         CORE.change_main_panel('queue')
         $('.logged-in').show()
         $('.not-logged-in').hide()

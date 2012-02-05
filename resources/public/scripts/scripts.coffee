@@ -40,7 +40,7 @@ CORE.create_item = (user) ->
   name: $('#name-box').val()
   price: $('#price-box').val()
   }
-  $('.make-item-input').val(' ')
+  $('.make-item-input').val('')
   hideModal()
   $('#queue-div').append(HTML.item item)
   attach_item_button_events(user)
@@ -161,6 +161,6 @@ $(document).ready ->
     $('#subtract-money-modal').show()
     $('#subtract-money-box').focus()
 
-  SETUP.add_user(CORE)
+  SETUP.add_user(CORE, user)
   CORE.change_main_panel('queue')
 

@@ -18,19 +18,19 @@
        [:div.clearfix
 	[:label {:for "name"} "Name:"]
 	[:div.input
-	 [:input {:class "large make-item-input", :id "user-name-box", :name "name", :size 30, :type "text"}]]]
+	 [:input {:class "large", :id "user-name-box", :name "name", :size 30, :type "text"}]]]
        [:div.clearfix
 	[:label {:for "email"} "Email:"]
 	[:div.input
-	 [:input {:class "large make-item-input", :id "user-email-box", :name "email", :size 30, :type "email"}]]]
+	 [:input {:class "large", :id "user-email-box", :name "email", :size 30, :type "email"}]]]
        [:div.clearfix
 	[:label {:for "password"} "Password:"]
 	[:div.input
-	 [:input {:class "large make-item-input", :id "user-password-box", :name "password", :size 30, :type "password"}]]]
+	 [:input {:class "large", :id "user-password-box", :name "password", :size 30, :type "password"}]]]
        [:div {:class "clearfix" :id "user-repeat-password-clearfix"}
 	[:label {:for "password-repeat"} "Password Again:"]
 	[:div.input
-	 [:input {:class "large make-item-input", :id "user-password-repeat-box", :name "password-repeat", :size 30, :type "password"}]
+	 [:input {:class "large", :id "user-password-repeat-box", :name "password-repeat", :size 30, :type "password"}]
 	 [:span.help-inline {:id "repeat-password-tip"} ""]]]]])
 
 (def add-money-content
@@ -39,7 +39,7 @@
       [:div.clearfix
        [:label {:for "amount"} "How much money to add?"]
        [:div.input
-	[:input {:class "large make-item-input", :id "add-money-box", :name "amount", :size 30, :type "text"}]]]])
+	[:input {:class "large", :id "add-money-box", :name "amount", :size 30, :type "text"}]]]])
 
 (def save-your-work-content
      [:div
@@ -51,7 +51,7 @@
       [:div.clearfix
        [:label {:for "amount"} "How much money to remove?"]
        [:div.input
-	[:input {:class "large make-item-input", :id "subtract-money-box", :name "amount", :size 30, :type "text"}]]]])
+	[:input {:class "large", :id "subtract-money-box", :name "amount", :size 30, :type "text"}]]]])
 
 (defn buttons[data]
   (apply vector (cons :div (map #(vector :a {:class (str (if (% 2) "btn primary" "btn") " " (% 3)) :id (% 0)} (% 1)) data))))
