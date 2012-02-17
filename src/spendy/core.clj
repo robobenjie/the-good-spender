@@ -22,6 +22,7 @@
    [:head 
     [:title title]
     (include-css "/css/bootstrap.css")
+    (include-css "/css/jquery-ui-1.8.17.custom.css")
     (include-css "/css/spendy_addons.css")
     (include-js "/scripts/jquery.js")
     (include-js "/scripts/utils.js")
@@ -29,7 +30,8 @@
     (include-js "/scripts/IO.js")
     (include-js "/scripts/setup.js")
     (include-js "/scripts/wait.js")
-    (include-js "/scripts/jquery-ui-1.8.16.custom.min.js")
+    (include-js "/scripts/jquery-ui-1.8.17.custom.min.js")
+    (include-js "/scripts/modals.js")
     (include-js "/scripts/scripts.js")]
    [:body 
     body
@@ -175,10 +177,29 @@ last time it was saved and the current 'rate' field"
 	   [:div
 	    [:h2 "You have saved $"[:span#money-saved]]
 	    [:div#queue-div]
-	    [:a {:class "btn pad-left not-logged-in" :id "create-account-btn" :style "float: left"} [:span "Create Account"]]
+	    [:a {:class "btn pad-left not-logged-in create-account-btn" :style "float: left"} [:span "Create Account"]]
 	    [:a {:class "btn pad-right" :id "new-item" :style "float: right"} [:h3 "+"]]]
 	   
 	   (side-bar))
+	  (content-area 
+	   "main-panel-about"
+	   "The Good Spender" 
+	   " live well below your mean"
+	   [:div {:class "pad-left pad-right"}
+	    [:h3 "Buy the things you want"]
+	    [:p "Just tell us all the big ticket items you are excited to own. Then you pick how much you can afford to spend each month. We'll tell you when to buy each thing. You can afford to buy anything, you just need to wait longer for some things."]
+	    [:hr]
+	    [:h3 "Never go over budget"]
+	    [:p "You pick how much you are going to spend each month. All we help you do is spread out your big purchases over time so you don't accidentally overspend."]
+	    [:hr]
+	    [:h3 "Use your money to be happier"]
+	    [:p "Research shows that money can be used to buy happiness, but you only if you use it effectively. As soon as you buy something you quickly become accustomed to it and it gives you less and less joy. The Good Spender helps stretch out the anticipation so you get maximum happiness from your stuff. Because really, isn't that what buying things is all about?" ]
+	    [:a {:href "http://dunn.psych.ubc.ca/files/2011/04/Journal-of-consumer-psychology.pdf"} "(Academic research on how to buy happiness)"]
+	    [:hr]
+	    [:a {:class "btn pad-left not-logged-in create-account-btn" :style "float: left"} [:span "Create Account"]]
+	    [:a {:class "btn primary pad-right" :id "try-now-btn" :style "float: right"} "Try it out!"]]
+	   
+	   [:p "The Good Spender is created and maintained as a hobby by Benjie Holson. If you like it, hate it, or just want to chat shoot him an "[:a {:href "mailto:bmholson@gmail.com"} "email"]])
 	  (content-area
 	   "main-panel-sign-up"
 	   "Sign Up!"

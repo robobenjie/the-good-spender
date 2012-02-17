@@ -7,6 +7,8 @@ SETUP.add_user = (CORE, user) ->
   $('#save-btn').click ->
     CORE.change_main_panel('sign-up')
     CORE.hideModal()
+  $('#try-now-btn').click ->
+    CORE.change_main_panel('queue')
   $('#cancel-account-create-btn').click ->
     CORE.change_main_panel('queue')
   $('#user-name-box').focus (e) ->

@@ -6,6 +6,7 @@ HTML.item = (item) ->
        <h3 style=\"float: left\" class=\"item-name\">  #{item.name} </h3>
        <h3 style=\"float: right\"> $<span class=\"item-price\">#{item.price}</span></h3>
      </div>
+     <div class=\"progressBar\"></div>
      <div class=\"item-image\">
         picture
      </div>

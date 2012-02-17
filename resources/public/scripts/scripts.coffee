@@ -5,9 +5,9 @@ new_user_obj = (email,name, pw) ->
     email: email
     name: name
     password: pw
-    cash: 5.0048
-    rate: UTILS.dpm_to_dps 400
-    items: [{name: "Blue Suede Shoes", price: 245},{name: "Les Paul Guitar", price: 500}]
+    cash: 5.0028
+    rate: UTILS.dpm_to_dps 700
+    items: [{name: "Blue Suede Shoes", price: 85},{name: "Les Paul Guitar", price: 500}]
   }
 CORE.new_user_obj = new_user_obj
 
@@ -55,10 +55,12 @@ redraw_items = (user, callback = (->), target = '#queue-div') ->
   attach_item_button_events(user)
 
 attach_item_button_events = (user) ->
+  $('.delete-item').off()
   $('.delete-item').click ->
     deletethis this, user
   $( "#queue-div" ).sortable({stop: ()->update_and_save(user)});
   $( "#queue-div" ).disableSelection()
+  $('.buy-item-btn').off()
   $('.buy-item-btn').click ->
     buythis this, user
 
@@ -73,6 +75,8 @@ CORE.display_money = (user, cash = user.cash) ->
   now = date_obj.getTime()
   $('#money-saved').html(cash.toFixed(2))
   for item_elem in $('.queue-item')
+    progressbar = $(item_elem).find('.progressBar')
+    progressbar.hide()
     cost =  parseInt($(item_elem).find('.item-price').html())
     cash -= cost if cost
     if cash > 0
@@ -80,6 +84,10 @@ CORE.display_money = (user, cash = user.cash) ->
       $(item_elem).find('.buy-date').html(" ")
       $(item_elem).find('.wait-time').html(" ")
     else
+      if cost + cash > 0
+        progressbar.progressbar {value: (cash + cost) / cost * 100}
+        progressbar.show()
+
       wait_time = -cash/dollars_per_second
       now = new Date()
       time_to_buy = new Date()
@@ -151,7 +159,7 @@ $(document).ready ->
 
   $('.close-modal').click(hideModal)
   $('#new-item').click(()->$('#create-item-modal').show())
-  $('#create-account-btn').click ->
+  $('.create-account-btn').click ->
     CORE.change_main_panel('sign-up')
     CORE.hideModal()
   $('#add-money').click ()->
@@ -162,5 +170,7 @@ $(document).ready ->
     $('#subtract-money-box').focus()
 
   SETUP.add_user(CORE, user)
-  CORE.change_main_panel('queue')
+  CORE.change_main_panel('about')
+
+
 
