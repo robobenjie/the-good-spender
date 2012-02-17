@@ -153,6 +153,7 @@ $(document).ready ->
               SETUP.on_user_change user, CORE
               $(".sign-up").hide()
               $(".signed-in").show()
+              CORE.change_main_panel 'queue'
               updateTime = time
               $('.logged-in').show()
               $('.not-logged-in').hide()
