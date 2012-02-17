@@ -184,7 +184,7 @@ last time it was saved and the current 'rate' field"
 	  (content-area 
 	   "main-panel-about"
 	   "The Good Spender" 
-	   " live well below your mean"
+	   " live well below your means"
 	   [:div {:class "pad-left pad-right"}
 	    [:h3 "Buy the things you want"]
 	    [:p "Just tell us all the big ticket items you are excited to own. Then you pick how much you can afford to spend each month. We'll tell you when to buy each thing. You can afford to buy anything, you just need to wait longer for some things."]
