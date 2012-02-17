@@ -1,13 +1,10 @@
 (function() {
   var pluralize, zeropad;
-
   window.HTML = {};
-
   HTML.item = function(item) {
     var s;
     return s = "   <div class=\"queue-item ui-state-default\">     <div class=\"item-topbar\">       <h3 style=\"float: left\" class=\"item-name\">  " + item.name + " </h3>       <h3 style=\"float: right\"> $<span class=\"item-price\">" + item.price + "</span></h3>     </div>     <div class=\"progressBar\"></div>     <div class=\"item-image\">        picture     </div>     <div class=\"item-main\">       <p class=\"item-main-text\"> </p>        <h4>&nbsp;&nbsp; <span class=\"wait-time\"> </span> </h4>        <p> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span class=\"buy-date\"> </span><p>      </div>     <div class=\"item-buttons\">        <h4 style=\"float: right\">        <a class=\"btn delete-item\"> del </a>        <a class=\"btn buy-item-btn\"> Buy! </a></h4>     </div>   </div>";
   };
-
   HTML.time_string = function(seconds) {
     var day, days, hour, hours, min, minutes, month, months;
     day = 86400;
@@ -30,7 +27,6 @@
       return "in " + (zeropad(hours)) + ":" + (zeropad(minutes)) + ":" + (zeropad(seconds));
     }
   };
-
   pluralize = function(num) {
     if (num === 1) {
       return "";
@@ -38,7 +34,6 @@
       return "s";
     }
   };
-
   zeropad = function(num) {
     if (num < 10) {
       return "0" + num;
@@ -46,5 +41,4 @@
       return num;
     }
   };
-
 }).call(this);

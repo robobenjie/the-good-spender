@@ -127,16 +127,27 @@ CORE.change_main_panel = (name) ->
   for panel in ["queue","sign-up","about"]
     $(".main-panel-#{panel}").hide()
   $(".main-panel-#{name}").show()
+  setTimeout (()->
+    if $('.not-logged-in').css('display') isnt "none" and $('.main-panel-queue').css('display') isnt "none"
+      $('#save-your-work-modal').show())
+  , 100000
 
 setup_blank_user = ()->
   user = new_user_obj()
   time = new Date()
   updateTime = time.getTime()
-  setTimeout (()->
-    if $('.not-logged-in').css('display') isnt "none" and $('.main-panel-queue').css('display') isnt "none"
-      $('#save-your-work-modal').show())
-  , 100000
   return user
+
+login = (user, time) ->
+  redraw_items user
+  SETUP.on_user_change user, CORE
+  $(".sign-up").hide()
+  $(".signed-in").show()
+  CORE.change_main_panel 'queue'
+  updateTime = time
+  $('.logged-in').show()
+  $('.not-logged-in').hide()
+
 
 $(document).ready ->
   user = setup_blank_user()
@@ -146,20 +157,15 @@ $(document).ready ->
   hideModal()
 
   $('#sign-in').click ->
-    IO.get_data $("#username-box").val(),
-            $("#password-box").val(),
-            (user, time)->
-              redraw_items user
-              SETUP.on_user_change user, CORE
-              $(".sign-up").hide()
-              $(".signed-in").show()
-              CORE.change_main_panel 'queue'
-              updateTime = time
-              $('.logged-in').show()
-              $('.not-logged-in').hide()
+    IO.get_data
+            email: $("#username-box").val(),
+            password: $("#password-box").val(),
+            login
 
   $('.close-modal').click(hideModal)
-  $('#new-item').click(()->$('#create-item-modal').show())
+  $('#new-item').click ->
+    $('#create-item-modal').show()
+    $('#name-box').focus()
   $('.create-account-btn').click ->
     CORE.change_main_panel('sign-up')
     CORE.hideModal()
@@ -169,9 +175,13 @@ $(document).ready ->
   $('#subtract-money').click ()->
     $('#subtract-money-modal').show()
     $('#subtract-money-box').focus()
-
+  $('.logged-in').hide()
+  IO.get_data {}, (user, time) ->
+    if user.email?
+      login user, time
   SETUP.add_user(CORE, user)
   CORE.change_main_panel('about')
+  IO.get_data
 
 
 

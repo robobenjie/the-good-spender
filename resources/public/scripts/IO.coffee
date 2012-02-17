@@ -4,11 +4,14 @@ do_ajax = (mtype, object, callback = ()->)->
   json_obj = JSON.stringify {mtype, object}
   $.post "/", {"send_object": json_obj}, callback
 
-IO.get_data = (username, password, callback = (obj)-> ) ->
-  do_ajax "get-data", {email: username, password: password},
+IO.log_out = (callback = ->) ->
+  $.post "/logout", {}, callback
+
+IO.get_data = (data_obj, callback = (obj)-> ) ->
+  do_ajax "get-data", data_obj,
     (result) ->
       user = JSON.parse result
-      user.password = password #stuff password back in because the server doesn't store it
+      user.password = data_obj.password ? "" #stuff password back in because the server doesn't store it
       time = new Date()
       callback user, time
       #because it is Asynchronous, get_data returns something crazy

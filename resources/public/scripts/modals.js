@@ -1,5 +1,4 @@
 (function() {
-
   /*
   # example code for how to use the modal class:
     test = new Modal "myModal","Title of the Modal", [
@@ -11,14 +10,11 @@
         click: (data)-> alert(data.input)]
     test.show()
   */
-
   var Modal;
-
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Modal = (function() {
-
     function Modal(unique_id, title, formElements, buttons) {
       var button, elem, getData, _i, _len;
-      var _this = this;
       this.unique_id = unique_id;
       this.title = title;
       this.formElements = formElements;
@@ -46,40 +42,36 @@
       }).call(this);
       this.html += "  </div>\n</div>\n</form>\n</div>";
       $('body').append(this.html);
-      getData = function() {
+      getData = __bind(function() {
         var elem, ret, _i, _len, _ref;
         ret = {};
-        _ref = _this.formElements;
+        _ref = this.formElements;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           elem = _ref[_i];
-          ret[elem.name] = $("#" + (_this.unique_id + elem.name)).val();
+          ret[elem.name] = $("#" + (this.unique_id + elem.name)).val();
         }
         return ret;
-      };
+      }, this);
       for (_i = 0, _len = buttons.length; _i < _len; _i++) {
         button = buttons[_i];
         $("#" + (this.unique_id + button.text.dasherize())).click(function() {
           button.click(getData());
-          if (!button.dont_close) return $("#" + unique_id).hide();
+          if (!button.dont_close) {
+            return $("#" + unique_id).hide();
+          }
         });
       }
       $("#" + this.unique_id + "-close").click(function() {
         return $("#" + unique_id).hide();
       });
     }
-
     Modal.prototype.show = function() {
       return $("#" + this.unique_id).show();
     };
-
     Modal.prototype.hide = function() {
       return $("#" + this.unique_id).hide();
     };
-
     return Modal;
-
   })();
-
   window.Modal = Modal;
-
 }).call(this);

@@ -1,10 +1,7 @@
 (function() {
   var money_updater;
-
   window.SETUP = {};
-
   money_updater = {};
-
   SETUP.add_user = function(CORE, user) {
     var add_error, errors;
     $('#save-btn').click(function() {
@@ -47,7 +44,9 @@
     };
     return $('#sign-up-btn').click(function() {
       $('#sign-up-errors').html("");
-      if ($('#user-name-box').val() === "") add_error("You need to enter a name");
+      if ($('#user-name-box').val() === "") {
+        add_error("You need to enter a name");
+      }
       if ($('#user-email-box').val() === "") {
         add_error("You left your email blank");
       }
@@ -70,7 +69,6 @@
       }
     });
   };
-
   SETUP.on_user_change = function(user, CORE) {
     $('#money-rate').off();
     $('#money-rate').keyup(function() {
@@ -93,15 +91,21 @@
     });
     $('#price-box, #name-box').off();
     $('#price-box, #name-box').keyup(function(e) {
-      if (e.which === 13) return CORE.create_item(user, "add");
+      if (e.which === 13) {
+        return CORE.create_item(user, "add");
+      }
     });
     $('#add-money-box').off();
     $('#add-money-box').keyup(function(e) {
-      if (e.which === 13) return CORE.submit_money_change_form(user, "add");
+      if (e.which === 13) {
+        return CORE.submit_money_change_form(user, "add");
+      }
     });
     $('#subtract-money-box').off();
     $('#subtract-money-box').keyup(function(e) {
-      if (e.which === 13) return CORE.submit_money_change_form(user, "subtract");
+      if (e.which === 13) {
+        return CORE.submit_money_change_form(user, "subtract");
+      }
     });
     $('#add-money-btn').off();
     $('#add-money-btn').click(function() {
@@ -116,5 +120,4 @@
       return CORE.update_cash(user);
     }, 100);
   };
-
 }).call(this);

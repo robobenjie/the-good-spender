@@ -75,7 +75,8 @@
       " "
       [:input#password-box {:class "input-small not-logged-in" :type "password" :placeholder "password"}]
       " "
-      [:button#sign-in {:class "btn not-logged-in", :type "submit"} "Sign in"]]]]])
+      [:button#sign-in {:class "btn not-logged-in", :type "submit"} "Sign in"]
+      [:a {:href "/logout" :class "btn logged-in"} "Log Out"] ]]]])
 
 (defn content-area [tag page-name tag-line main-content secondary-content]
   [:div {:class tag}
@@ -155,14 +156,16 @@ last time it was saved and the current 'rate' field"
 	"save-data" 
       (save-to-redis username (salt-pw (update-cash recieved-obj)))
       "get-data"
-      (let [stored-obj (get-from-redis username)]
+      (if (not (nil? username))
+         (let [a (println "username is: " username)stored-obj (get-from-redis username)]
 	    (if (verify-password (recieved-obj "password") (stored-obj "salt"))
 	      (do
 		(println "passwords match")
 		(update-cash stored-obj) )
 	      (do
-		(println "passwords don't match")
+		(println "passwords don't match: " (recieved-obj "password"))
 		{:message "bad password"})))
+       (do (println "no session") ""))
       "poop")))
 
 
