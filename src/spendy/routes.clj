@@ -16,17 +16,7 @@
   (GET "/" [] (do (index-page)))
   (POST "/" [send_object]
 	(let [obj (json/parse-string send_object) user (obj "object")]
-	     	(if (and (user "email") (user "password"))
-		    (do
-			(session-put! :username (user "email"))
-			(session-put! :password (user "password"))
-			(json/generate-string (respond-to-ajax (obj "mtype") (obj "object"))))
-		    (do
-			(json/generate-string (respond-to-ajax (obj "mtype")
-			(assoc 
-			       (assoc user
-			       	      "email" (session-get :username nil))
-			       "password" (session-get :password nil))))))))	
+			(json/generate-string (respond-to-ajax (obj "mtype") (obj "object")))))
   (route/resources "/")
   (route/not-found "404rd!"))
 

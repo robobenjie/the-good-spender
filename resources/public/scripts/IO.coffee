@@ -5,7 +5,8 @@ do_ajax = (mtype, object, callback = ()->)->
   $.post "/", {"send_object": json_obj}, callback
 
 IO.log_out = (callback = ->) ->
-  $.post "/logout", {}, callback
+  do_ajax "log-out", {}, (result) ->
+    callback(result)
 
 IO.get_data = (data_obj, callback = (obj)-> ) ->
   do_ajax "get-data", data_obj,

@@ -8,7 +8,8 @@
 (ns spendy.core
   (:use [hiccup core page-helpers]
 	spendy.modals
-	spendy.pwprot)
+	spendy.pwprot
+	(sandbar stateful-session))
   (:require [clj-json.core :as json])
   (:import  [redis.clients.jedis Jedis JedisPool]))
 
@@ -76,7 +77,7 @@
       [:input#password-box {:class "input-small not-logged-in" :type "password" :placeholder "password"}]
       " "
       [:button#sign-in {:class "btn not-logged-in", :type "submit"} "Sign in"]
-      [:a {:href "/logout" :class "btn logged-in"} "Log Out"] ]]]])
+      [:button#log-out-btn {:class "btn logged-in"} "Log Out"] ]]]])
 
 (defn content-area [tag page-name tag-line main-content secondary-content]
   [:div {:class tag}
@@ -149,23 +150,32 @@ last time it was saved and the current 'rate' field"
       (assoc (assoc user-obj "update-time" time) "cash" 0))))
 
 
-(defn respond-to-ajax[type recieved-obj]
-  (println "type:" type "object:" recieved-obj)
-  (let [username (recieved-obj "email")]
+(defn respond-to-ajax[type received-obj]
+  (println "type:" type "object:" received-obj)
+  (let [username (received-obj "email")]
     (condp = type  
-	"save-data" 
-      (save-to-redis username (salt-pw (update-cash recieved-obj)))
+      "save-data" 
+        (save-to-redis username (salt-pw (update-cash received-obj)))
       "get-data"
-      (if (not (nil? username))
-         (let [a (println "username is: " username)stored-obj (get-from-redis username)]
-	    (if (verify-password (recieved-obj "password") (stored-obj "salt"))
-	      (do
-		(println "passwords match")
-		(update-cash stored-obj) )
-	      (do
-		(println "passwords don't match: " (recieved-obj "password"))
-		{:message "bad password"})))
-       (do (println "no session") ""))
+	(let [username (or username (session-get :username) nil)
+	      password (or (received-obj "password") (session-get :password) "")]
+             	 (if (not (nil? username))
+            	     (let [stored-obj (get-from-redis username)]
+		         (println "I think: " username password)
+		         (session-put! :username username)
+		         (session-put! :password password)
+         	         (if (verify-password password (stored-obj "salt"))
+	              	     (do
+				(println "passwords match")
+				(update-cash stored-obj))
+	      		     (do
+				(println "passwords don't match.")
+				{:message "bad password"})))
+	             (do (println "no session") "")))
+       "log-out"
+	  (do
+		(session-delete-key! :username)
+		(session-delete-key! :password))
       "poop")))
 
 

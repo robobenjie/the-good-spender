@@ -18,7 +18,9 @@
     if (callback == null) {
       callback = function() {};
     }
-    return $.post("/logout", {}, callback);
+    return do_ajax("log-out", {}, function(result) {
+      return callback(result);
+    });
   };
   IO.get_data = function(data_obj, callback) {
     if (callback == null) {

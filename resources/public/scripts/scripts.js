@@ -208,6 +208,11 @@
       return false;
     });
     hideModal();
+    $('#log-out-btn').click(function() {
+      return IO.log_out(function() {
+        return location.reload(true);
+      });
+    });
     $('#sign-in').click(function() {
       return IO.get_data({
         email: $("#username-box").val(),

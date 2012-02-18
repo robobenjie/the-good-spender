@@ -155,6 +155,8 @@ $(document).ready ->
   SETUP.on_user_change user, CORE
   $('form').submit(()->return false)
   hideModal()
+  $('#log-out-btn').click ->
+    IO.log_out -> location.reload(true)
 
   $('#sign-in').click ->
     IO.get_data
