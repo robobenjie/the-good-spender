@@ -8,6 +8,10 @@ IO.log_out = (callback = ->) ->
   do_ajax "log-out", {}, (result) ->
     callback(result)
 
+IO.get_images_amazon = (keyword, callback = ->) ->
+  do_ajax "amazon-images", keyword: keyword, (result) ->
+    callback JSON.parse result
+
 IO.get_data = (data_obj, callback = (obj)-> ) ->
   do_ajax "get-data", data_obj,
     (result) ->

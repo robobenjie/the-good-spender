@@ -8,7 +8,7 @@ HTML.item = (item) ->
      </div>
      <div class=\"progressBar\"></div>
      <div class=\"item-image\">
-        picture
+        <img class=\"centered-image\" src=\"#{item.image_url}\"></img>
      </div>
      <div class=\"item-main\">
        <p class=\"item-main-text\"> </p>

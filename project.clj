@@ -7,6 +7,7 @@
 	         [sandbar/sandbar "0.4.0-SNAPSHOT"]
 	         [ring-json-params "0.1.0"]
 	         [clj-json "0.2.0"]
-		 [redis.clients/jedis "1.5.2"]]
+		 [redis.clients/jedis "1.5.2"]
+		 [am.ik/clj-aws-ecs "0.1.0"]]
   :dev-dependencies [[lein-ring "0.4.5"]]
   :ring {:handler spendy.routes/app})

@@ -7,7 +7,9 @@ new_user_obj = (email,name, pw) ->
     password: pw
     cash: 5.0028
     rate: UTILS.dpm_to_dps 700
-    items: [{name: "Blue Suede Shoes", price: 85},{name: "Les Paul Guitar", price: 500}]
+    items: [
+      {name: "Blue Suede Shoes", price: 85, image_url: "http://ecx.images-amazon.com/images/I/31knX6ttILL._SL75_.jpg"},
+      {name: "Les Paul Guitar", price: 500, image_url: "http://ecx.images-amazon.com/images/I/31OWUS38ndL._SL75_.jpg"}]
   }
 CORE.new_user_obj = new_user_obj
 

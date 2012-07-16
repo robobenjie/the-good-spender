@@ -77,6 +77,12 @@ SETUP.on_user_change = (user,CORE)->
   $('#price-box, #name-box').off()
   $('#price-box, #name-box').keyup (e)->
     CORE.create_item user, "add" if e.which is 13
+  $('#name-box').keyup ->
+    IO.get_images_amazon $('#name-box').val(), (response) ->
+      target = $('#new-item-image-div')
+      target.html(' ')
+      for img_data in response[0...7]
+        target.append """<img src="#{img_data.SmallImageUrl}"></img>"""
   $('#add-money-box').off()
   $('#add-money-box').keyup (e)->
     CORE.submit_money_change_form user, "add" if e.which is 13

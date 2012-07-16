@@ -9,6 +9,7 @@
   (:use [hiccup core page-helpers]
 	spendy.modals
 	spendy.pwprot
+	spendy.amazon
 	(sandbar stateful-session))
   (:require [clj-json.core :as json])
   (:import  [redis.clients.jedis Jedis JedisPool]))
@@ -65,8 +66,8 @@
     ]))
 
 (defn make-topbar[currentPage]
-  [:div.topbar
-   [:div.fill
+  [:div {:class "navbar navbar-fixed-top"}
+   [:div.navbar-inner
     [:div.container
      [:a {:class "brand" :href "#"} site-name]
      [:ul.nav
@@ -86,8 +87,8 @@
      [:div.page-header
       [:h1 page-name [:small tag-line]]]
      [:div.row
-      [:div.span10 main-content]
-      [:div.span4 secondary-content]]]]])
+      [:div.span7 main-content]
+      [:div.span3 secondary-content]]]]])
 (defn side-bar []
   [:form
    [:fieldset
@@ -176,6 +177,8 @@ last time it was saved and the current 'rate' field"
 	  (do
 		(session-delete-key! :username)
 		(session-delete-key! :password))
+       "amazon-images"
+          (get-images-from-amazon (received-obj "keyword"))
       "poop")))
 
 

@@ -12,10 +12,12 @@
       items: [
         {
           name: "Blue Suede Shoes",
-          price: 85
+          price: 85,
+          image_url: "http://ecx.images-amazon.com/images/I/31knX6ttILL._SL75_.jpg"
         }, {
           name: "Les Paul Guitar",
-          price: 500
+          price: 500,
+          image_url: "http://ecx.images-amazon.com/images/I/31OWUS38ndL._SL75_.jpg"
         }
       ]
     };

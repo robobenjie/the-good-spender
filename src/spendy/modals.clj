@@ -10,7 +10,8 @@
       [:div.clearfix
        [:label {:for "price"} "Approximate cost?"]
        [:div.input
-	[:input {:class "large make-item-input", :id "price-box", :name "price", :size 30, :type "text"}]]]])
+	[:input {:class "large make-item-input", :id "price-box", :name "price", :size 30, :type "text"}]]]
+      [:div#new-item-image-div]])
 
 (def make-user-content
      [:div

@@ -95,6 +95,20 @@
         return CORE.create_item(user, "add");
       }
     });
+    $('#name-box').keyup(function() {
+      return IO.get_images_amazon($('#name-box').val(), function(response) {
+        var img_data, target, _i, _len, _ref, _results;
+        target = $('#new-item-image-div');
+        target.html(' ');
+        _ref = response.slice(0, 7);
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          img_data = _ref[_i];
+          _results.push(target.append("<img src=\"" + img_data.SmallImageUrl + "\"></img>"));
+        }
+        return _results;
+      });
+    });
     $('#add-money-box').off();
     $('#add-money-box').keyup(function(e) {
       if (e.which === 13) {
